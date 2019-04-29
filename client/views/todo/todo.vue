@@ -29,9 +29,9 @@
 </template>
 
 <script>
-// import {
-//   mapState, mapActions
-// } from 'vuex'
+import {
+  mapState, mapActions
+} from 'vuex'
 import Item from './item.vue'
 import Helper from './helper.vue'
 
