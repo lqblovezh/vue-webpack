@@ -1,7 +1,5 @@
 {
-  "presets": [
-    "stage-1"
-  ],
+  "presets": ["@babel/react","@babel/env"],
   "plugins": [
     "transform-vue-jsx",
     "syntax-dynamic-import"

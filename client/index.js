@@ -56,7 +56,5 @@ document.body.appendChild(root)
 // })
 
 new Vue({
-  // router,
-  // store,
   render: h => h(App)
 }).$mount(root)

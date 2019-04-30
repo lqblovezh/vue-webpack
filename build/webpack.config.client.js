@@ -39,14 +39,14 @@ if (isDev) {
     devServer,
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
+      // new webpack.NoEmitOnErrorsPlugin(),
     ],
   })
 } else {
   config = merge(baseConfig, {
     entry: {
       app: path.join(__dirname, '../client/index.js'),
-      vendor: ['vue'],
+      // vendor: ['vue'],
     },
     output: {
       filename: '[name].[chunkhash:8].js',
@@ -71,14 +71,20 @@ if (isDev) {
         },
       ],
     },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+      runtimeChunk: true,
+    },
     plugins: [
-      new ExtractPlugin('styles.[contentHash:8].css'),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'runtime',
-      }),
+      new ExtractPlugin('styles.[name].css'),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'vendor',
+      // }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'runtime',
+      // }),
     ],
   })
 }
