@@ -1,15 +1,18 @@
 <script>
-import TabContainer from './tab-container.vue'
+import TabContainer from './tabContainer.vue'
 
 export default {
+  components: { TabContainer },
   name: 'Tabs',
-  components: {
-    TabContainer
-  },
   props: {
     value: {
       type: [String, Number],
       required: true
+    }
+  },
+  methods: {
+    onChange (index) {
+      this.$emit('change', index)
     }
   },
   data () {
@@ -19,18 +22,11 @@ export default {
   },
   render () {
     return (
-      <div class='tabs'>
-        <ul class='tabs-header'>
-          {this.$slots.default}
-        </ul>
-        <tab-container panes={this.panes}></tab-container>
+      <div class="tabs">
+        <ul class="tabs-header">{this.$slots.default}</ul>
+        <TabContainer panes={this.panes} />
       </div>
     )
-  },
-  methods: {
-    onChange (index) {
-      this.$emit('change', index)
-    }
   }
 }
 </script>

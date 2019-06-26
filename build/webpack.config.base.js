@@ -1,4 +1,6 @@
 const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HTMLPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const createVueLoaderOptions = require('./vue-loader.config')
@@ -6,34 +8,61 @@ const createVueLoaderOptions = require('./vue-loader.config')
 const isDev = process.env.NODE_ENV === 'development'
 
 const config = {
-  mode: process.env.NODE_ENV || 'production',
+  plugins: [new VueLoaderPlugin()],
   target: 'web',
-  entry: path.join(__dirname, '../client/index.js'),
+  entry: path.join(__dirname, '../client/client-entry.js'),
   output: {
     filename: 'bundle.[hash:8].js',
-    path: path.join(__dirname, '../dist'),
+    path: path.join(__dirname, '../public'),
+    publicPath: 'http://127.0.0.1:8000/public/',
   },
   module: {
     rules: [
       {
-        test: /\.(vue|jsx|js)$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/,
-        enforce: 'pre',
-      },
-      {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: createVueLoaderOptions(isDev),
+        // options: createVueLoaderOptions(isDev),
       },
       {
         test: /\.jsx$/,
         loader: 'babel-loader',
       },
       {
+        test: /\.pug$/,
+        loader: 'pug-plain-loader',
+      },
+      {
+        test: /\.css$/,
+        oneOf: [
+          {
+            resourceQuery: /module/,
+            use: [
+              !isDev
+                ? {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                      publicPath: '/publick/',
+                    },
+                  }
+                : 'vue-style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: true,
+                  localIdentName: '[local]_[hash:base64:8]',
+                },
+              },
+            ],
+          },
+          {
+            use: ['vue-style-loader', 'css-loader'],
+          },
+        ],
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: file => /node_modules/.test(file) && !/\.vue\.js/.test(file),
       },
       {
         test: /\.(gif|jpg|jpeg|png|svg)$/,
@@ -49,14 +78,6 @@ const config = {
       },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: isDev ? '"development"' : '"production"',
-      },
-    }),
-    new HTMLPlugin(),
-  ],
 }
 
 module.exports = config
