@@ -12,7 +12,7 @@ export default () => {
     state: defaultState,
     mutations,
     getters,
-    actions,
+    actions
     // plugins: [
     //   (store) => {
     //     console.log('my plugin invoked')
@@ -61,7 +61,7 @@ export default () => {
         './state/state',
         './mutations/mutations',
         './actions/actions',
-        './getters/getters',
+        './getters/getters'
       ],
       () => {
         const newState = require('./state/state').default
@@ -73,7 +73,7 @@ export default () => {
           state: newState,
           mutations: newMutations,
           getters: newGetters,
-          actions: newActions,
+          actions: newActions
         })
       }
     )
