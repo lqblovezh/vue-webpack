@@ -21,7 +21,12 @@ const config = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        // options: createVueLoaderOptions(isDev),
+        options: {
+          cssModules: {
+            localIdentName: '[path][name]---[local]---[hash:base64:5]',
+            camelCase: true,
+          },
+        },
       },
       {
         test: /\.jsx$/,
@@ -33,29 +38,22 @@ const config = {
       },
       {
         test: /\.css$/,
-        oneOf: [
-          {
-            resourceQuery: /module/,
-            use: [
-              !isDev
-                ? {
-                    loader: MiniCssExtractPlugin.loader,
-                    options: {
-                      publicPath: '/publick/',
-                    },
-                  }
-                : 'vue-style-loader',
-              {
-                loader: 'css-loader',
+        use: [
+          !isDev
+            ? {
+                loader: MiniCssExtractPlugin.loader,
                 options: {
-                  modules: true,
-                  localIdentName: '[local]_[hash:base64:8]',
+                  publicPath: '/publick/',
                 },
-              },
-            ],
-          },
+              }
+            : 'vue-style-loader',
           {
-            use: ['vue-style-loader', 'css-loader'],
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[local]_[hash:base64:8]',
+            },
           },
         ],
       },

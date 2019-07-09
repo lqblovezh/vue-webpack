@@ -77,7 +77,7 @@ if (isDev) {
     },
     output: {
       filename: '[name].[chunkhash:8].js',
-      // publicPath: cdnConfig.host
+      publicPath: '/public/'
     },
     optimization: {
       splitChunks: {
